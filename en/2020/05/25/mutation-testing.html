@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/Blog">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Mutation testing systems, improving the quality of tests</title>
+  <meta name="description" content="Professionally I label myself as a developer, although I don’t like labels very much and I prefer to say that the reason for my work is: to create quality so...">
+  
+  <meta name="keywords" content="testing,mutationtestingsystems,pit,pitest,calidad,softwarequality,QA,cobertura,coverage,junit">
+  
+
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@wearearima">
+  <meta name="twitter:creator" content="@jessica">
+  <meta name="twitter:title"   content="Mutation testing systems, improving the quality of tests">
+
+  
+  <meta name="twitter:description" content="">
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://blog.arima.eu/assets/images/2020-05-12-mutation-testing/header.jpg">
+  
+  <!-- end of Twitter cards -->
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://blog.arima.eu/en/2020/05/25/mutation-testing.html">
+  <link rel="alternate" type="application/rss+xml" title="ARIMA" href="/en/feed.xml">
+
+  <!-- SEO Recipes (http://polyglot.untra.io/seo/) -->
+  <meta http-equiv="Content-Language" content="en">
+  <link rel="alternate"
+      hreflang="es"
+      href="https://blog.arima.eu/en/2020/05/25/mutation-testing.html" />
+  
+  
+  <link rel="alternate"
+      hreflang="es"
+      href="https://blog.arima.eu/es/2020/05/25/mutation-testing.html" />
+  
+  
+  <link rel="alternate"
+      hreflang="en"
+      href="https://blog.arima.eu/en/2020/05/25/mutation-testing.html" />
+  
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120217722-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-120217722-1');
+</script>
+  
+</head>
+
+  <body>
+    <nav class="toolbar">
+    <div class="wrapper">    
+        <a href="/en/">
+            <div class="toolbar__logo">
+                <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" width="100%" height="100%" viewBox="0 0 33 6">
+    <path id="path24" d="m30.346988508615652,-0.000015174522529526127 l-0.6439224998849951,0 l-2.7763635316117727,6.135695064030662 l0.7050150612484405,0 l2.3859233880279893,-5.335002838884215 l2.3660424189063254,5.335002838884215 l0.739668694925785,0 L30.346988508615652,-0.000015174522529526127 zm-8.274141805179609,3.3681675186951847 l-2.2194202716340565,-3.324608867598761 l-0.6962481061149294,0 l0,6.092136412934239 l0.6700853029999622,0 l0,-4.926062349034439 l2.2194202716340565,3.2553706313868567 l0.034929758248478535,0 l2.2192131782057056,-3.2639304930920168 l0,4.934622210739599 l0.6873430886958508,0 l0,-6.092136412934239 l-0.6961100438293623,0 l-2.2192131782057056,3.324608867598761 zm-9.143036799396208,-1.5057072863948877 c0,-1.0964906719739773 -0.8613705996531913,-1.8189015812038738 -2.201748299081466,-1.8189015812038738 l-2.619662837493104,0 l0,6.092136412934239 l0.6876192132669849,0 l0,-5.456842805897188 l1.8799251114245357,0 c0.9833486289517317,0 1.5576187057681203,0.4525681720889824 1.5576187057681203,1.2097017461390067 c0,0.7919252700129356 -0.7831583148794242,1.2620273523689407 -1.6968545207625496,1.2620273523689407 l0,0.6178287279128115 l1.7665759749739396,2.3672849794764295 l0.8442508762428699,0 l-1.8711581562910244,-2.4891249464894027 c0.9571858258367647,-0.17416557324290774 1.6534339319516944,-0.7659695603263191 1.6534339319516944,-1.7841098852409623 m2.7743616284710493,4.273234831730365 l0.6872050264102838,0 l0,-6.0920673817914555 l-0.6872050264102838,0 l0,6.0920673817914555 zM2.7761571742923965,-0.000015174522529526127 l-2.7761564381834223,6.135695064030662 l0.7048769989628736,0 l2.386061450313556,-5.335002838884215 l2.3658353254779745,5.335002838884215 l0.739668694925785,0 l-2.7761564381834223,-6.135695064030662 l-0.6441295933133457,0 z" stroke-width="0"/>
+</svg>
+
+            </div>
+        </a>
+        <!-- Language selector -->
+        <div class="language-selector">
+            
+              
+                <a class="unselected" href="/es/2020/05/25/mutation-testing.html">ES</a>
+              
+              
+                &nbsp;|&nbsp;
+              
+            
+              
+                <b class="selected">EN</b>
+              
+              
+            
+         </div>
+    </div>
+</nav>
+<div id="publisher_id" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Arima 100% Software Design" />
+    <meta itemprop="url" content="https://arima.eu" />
+    <div itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+        <meta itemprop="url" content="https://arima.eu/img/logo.png" />
+    </div>
+</div>
+    <main aria-label="Content">        
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting" itemref="publisher_id">
+          <link itemprop="mainEntityOfPage" href="/en/2020/05/25/mutation-testing.html" />
+
+          <header class="post-header">
+            <div class="post-img" itemprop="image" itemscope itemtype="http://schema.org/ImageObject" style="background-image: url('https://blog.arima.eu/assets/images/2020-05-12-mutation-testing/header.jpg');">
+              <meta itemprop="url" content="https://blog.arima.eu/assets/images/2020-05-12-mutation-testing/header.jpg" />
+            </div>
+            <div class="wrapper">
+              <div class="post-info__container">
+                <div class="post-info">
+                  <h1 class="post-title" itemprop="name headline">Mutation testing systems, improving the quality of tests</h1>
+                    <div class="post-meta" itemscope itemtype="https://schema.org/Person" itemprop="author">
+                      
+                      <div class="author-photo">
+                        <img itemprop="image" src="/assets/images/authors/jessica.png" alt="">
+                      </div>
+                      <div>
+                        <span class="post-author" itemprop="name">Jessica Aguado</span>
+                      </div>
+                      <div>
+                        <span class="post-date">25 May 2020</span>
+                      </div>
+                    </div>
+                    <meta  itemprop="datePublished dateModified" content="25 May 2020" />
+                </div>
+              </div>
+            </div>
+          </header>
+          <div class="wrapper">
+            <div class="post-content" itemprop="articleBody">
+              <p>Professionally I label myself as a developer, although I don’t like labels very much and I prefer to say that the reason for my work is: to create quality software. But what is <strong>quality software</strong>? I like to define it as follows:</p>
+
+<blockquote>
+  <p>Quality software is that which meets the user’s needs efficiently and without errors.</p>
+</blockquote>
+
+<p>I could add more adjectives, go into detail why needs and not requirements… but for me, that would be the definition. However, it’s difficult to get quality software if it’s not written with quality code.</p>
+
+<blockquote>
+  <p>Quality software → quality code</p>
+</blockquote>
+
+<p>Fortunately, developers are not alone in this task. There are tools for static code analysis (Checkstyle, PMD, FindBugs, SonarQube…) and different recommendations for good practices (personally I would highlight Clean Code and The Pragmatic Programmer). And there among proposals, acronyms and metrics, there’s no developer that doesn’t directly associate the term <em><strong>quality</strong></em> with the term <em><strong>testing</strong></em> (right?)</p>
+
+<blockquote>
+  <p>Quality code → quality tests</p>
+</blockquote>
+
+<h2 id="testing-the-path-to-quality">Testing: the path to quality</h2>
+
+<blockquote>
+  <p><strong>Tests are as important to the health of a project as the production code is.</strong></p>
+  <p align="right"><strong>Clean Code.</strong> Chapter 9: Unit Tests</p>
+</blockquote>
+
+<p>There are several types of tests (unit, integration, acceptance…). The most widespread are unit tests and integration tests. With them you get a certain perception of security, since although we do not know if the code does what it should, at least it does what it says.</p>
+
+<p>But is this so? Paradoxically, this practice consists of generating more code. So we continue programming, but who says this code does what it says? That is, who watches over the quality of the tests? Again another association of terms: <strong>quality tests</strong> are those that offer a high % of code <strong>coverage</strong>.</p>
+
+<blockquote>
+  <p>Quality tests → High % coverage of our code</p>
+</blockquote>
+
+<p>A higher percentage of code coverage gives better tests and more reliable code. This is nothing new. If I talk from my personal experience, a few years ago (back in the early 2000s) the minimum % coverage requirement was part of the delivery specifications of some projects. “<em>This deliverable must have a battery of tests that ensure a minimum of 70% code coverage</em>”, as a synonym of error-free code and proven quality in at least 70% of the code.</p>
+
+<p>Taking as an example an application to check the hours (or part hours) worked, let’s imagine that we are developing a method that, given a worker and a day, checks the status of the worker’s time sheets on that day (whether or not he has done the required hours, if he has done extra time….).</p>
+
+<h5 id="reportsserviceimpljava-see-all">ReportsServiceImpl.java <a href="https://github.com/wearearima/time-report-app/blob/feature/01_tests_for_project_requirements/src/main/java/eu/arima/tr/reports/ReportsServiceImpl.java" target="_blank">see all</a></h5>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">DayStatusSummary</span> <span class="nf">getDayStatusSummaryForWorkerAndDay</span><span class="o">(</span><span class="nc">String</span> <span class="n">workerUserName</span><span class="o">,</span> <span class="nc">LocalDate</span> <span class="n">date</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">DayStatusSummary</span> <span class="n">status</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DayStatusSummary</span><span class="o">();</span>
+  <span class="n">status</span><span class="o">.</span><span class="na">setDate</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+  <span class="n">status</span><span class="o">.</span><span class="na">setWorkerUserName</span><span class="o">(</span><span class="n">workerUserName</span><span class="o">);</span>
+
+  <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Worklog</span><span class="o">&gt;</span> <span class="n">worklogsForDay</span> <span class="o">=</span> <span class="n">worklogRepository</span><span class="o">.</span><span class="na">findByUsernameAndDate</span><span class="o">(</span><span class="n">workerUserName</span><span class="o">,</span> <span class="n">date</span><span class="o">);</span>
+  <span class="kt">int</span> <span class="n">totalDuration</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+  <span class="k">for</span> <span class="o">(</span><span class="nc">Worklog</span> <span class="n">worklog</span> <span class="o">:</span> <span class="n">worklogsForDay</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">totalDuration</span> <span class="o">=</span> <span class="n">totalDuration</span> <span class="o">+</span> <span class="n">worklog</span><span class="o">.</span><span class="na">getDuration</span><span class="o">();</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">totalDuration</span> <span class="o">==</span> <span class="mi">8</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">status</span><span class="o">.</span><span class="na">getStatusList</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="nc">DayStatus</span><span class="o">.</span><span class="na">RIGHT_HOURS</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">totalDuration</span> <span class="o">&gt;</span> <span class="mi">8</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">status</span><span class="o">.</span><span class="na">getStatusList</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="nc">DayStatus</span><span class="o">.</span><span class="na">EXTRA_HOURS</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">totalDuration</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">status</span><span class="o">.</span><span class="na">getStatusList</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="nc">DayStatus</span><span class="o">.</span><span class="na">MISSING_HOURS</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="n">status</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Let’s see an example of tests that we submitted at the time:</p>
+
+<h5 id="getdaystatussummaryforworkeranddaytestsjava-see-all">GetDayStatusSummaryForWorkerAndDayTests.java <a href="https://github.com/wearearima/time-report-app/blob/92fd1b537de787bc2a5d10dc85c9ee80295350d8/src/test/java/eu/arima/tr/reports/reportsServiceImpl/GetDayStatusSummaryForWorkerAndDayTests.java" target="_blank">see all</a></h5>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">get_status_summary_for_worker_and_day</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">reportsService</span><span class="o">.</span><span class="na">getDayStatusSummaryForWorkerAndDay</span><span class="o">(</span><span class="s">"USU"</span><span class="o">,</span> <span class="nc">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">());</span>
+  <span class="n">assertTrue</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">calculates_the_status_based_on_worker_and_date_worklogs</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Worklog</span><span class="o">&gt;</span> <span class="n">partes</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Worklog</span><span class="o">&gt;();</span>
+  <span class="nc">Worklog</span> <span class="n">wl</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Worklog</span><span class="o">();</span>
+  <span class="n">wl</span><span class="o">.</span><span class="na">setFromTime</span><span class="o">(</span><span class="nc">LocalTime</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">8</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">));</span>
+  <span class="n">wl</span><span class="o">.</span><span class="na">setToTime</span><span class="o">(</span><span class="nc">LocalTime</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">19</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">));</span>
+  <span class="n">partes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">wl</span><span class="o">);</span>
+  <span class="nc">Mockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">worklogRepository</span><span class="o">.</span><span class="na">findByUsernameAndDate</span><span class="o">(</span><span class="nc">ArgumentMatchers</span><span class="o">.</span><span class="na">anyString</span><span class="o">(),</span> <span class="nc">ArgumentMatchers</span><span class="o">.</span><span class="na">any</span><span class="o">(</span><span class="nc">LocalDate</span><span class="o">.</span><span class="na">class</span><span class="o">))).</span><span class="na">thenReturn</span><span class="o">(</span><span class="n">partes</span><span class="o">);</span>
+
+  <span class="nc">LocalDate</span> <span class="n">fecha</span> <span class="o">=</span> <span class="nc">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">();</span>
+  <span class="n">reportsService</span><span class="o">.</span><span class="na">getDayStatusSummaryForWorkerAndDay</span><span class="o">(</span><span class="s">"USU"</span><span class="o">,</span> <span class="n">fecha</span><span class="o">);</span>
+
+  <span class="nc">Mockito</span><span class="o">.</span><span class="na">verify</span><span class="o">(</span><span class="n">worklogRepository</span><span class="o">).</span><span class="na">findByUsernameAndDate</span><span class="o">(</span><span class="s">"USU"</span><span class="o">,</span> <span class="n">fecha</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We configured <a href="https://www.eclemma.org/jacoco/" target="_blank">JaCoCo</a> to get the test coverage report and the result is as follows.</p>
+
+<p><img src="/assets/images/2020-05-12-mutation-testing/01jacocoreport.png" alt="JaCoCo report general" class="center" target="_blank" /></p>
+
+<p>We have a coverage of 92% of lines and 87% of branches: objective met. But…if you look: the first test will (almost) never fail because it always ends with <code class="highlighter-rouge">assert true</code>, the second is a bit “more complete” because at least it verifies that the hours (or part hours) are retrieved… <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup></p>
+
+<p>Well this was my reality, and I am very much afraid that it was THE reality of that time in many projects (and who knows if in some of today). The projects met the code coverage requirements, which was far from having quality software.</p>
+
+<p>It’s true that the example I have given is extreme, but it is real. In my opinion, the problem is in the focus: everything has been turned around and the tests are created as a mere tool to fulfill one of the requirements of the project.</p>
+
+<blockquote>
+  <p>minimum % coverage required → test = “waste of time”</p>
+</blockquote>
+
+<p>Let’s go back to the original approach. It would remain:</p>
+
+<blockquote>
+  <p>Quality software → quality code → quality tests → % coverage of code</p>
+</blockquote>
+
+<p>In this scenario, the tests are created under the premise of having a higher quality code and the % coverage becomes another indicator. We are going to see a fragment of a better test example, one of those we do out of conviction and not just to fulfill a requirement (I suppose that they are more similar to those that we can find in current projects than previous ones …).</p>
+
+<h5 id="getdaystatussummaryforworkeranddaytestsjava-see-all-1">GetDayStatusSummaryForWorkerAndDayTests.java <a href="https://github.com/wearearima/time-report-app/blob/feature/02_tests_for_testing_purposes/src/test/java/eu/arima/tr/reports/reportsServiceImpl/GetDayStatusSummaryForWorkerAndDayTests.java" target="_blank">see all</a></h5>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">if_the_worklog_for_the_resquested_day_is_less_than_8_hours_the_status_is_MISSING_HOURS</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">Worklog</span> <span class="n">worklog</span> <span class="o">=</span> <span class="nc">Mockito</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="nc">Worklog</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="nc">Mockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">worklog</span><span class="o">.</span><span class="na">getDuration</span><span class="o">()).</span><span class="na">thenReturn</span><span class="o">(</span><span class="mi">7</span><span class="o">);</span>
+  <span class="nc">Mockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">worklogRepository</span><span class="o">.</span><span class="na">findByUsernameAndDate</span><span class="o">(</span><span class="nc">ArgumentMatchers</span><span class="o">.</span><span class="na">anyString</span><span class="o">(),</span> <span class="nc">ArgumentMatchers</span><span class="o">.</span><span class="na">any</span><span class="o">(</span><span class="nc">LocalDate</span><span class="o">.</span><span class="na">class</span><span class="o">))).</span><span class="na">thenReturn</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">worklog</span><span class="o">));</span>
+
+  <span class="nc">DayStatusSummary</span> <span class="n">resultado</span> <span class="o">=</span> <span class="n">reportsService</span><span class="o">.</span><span class="na">getDayStatusSummaryForWorkerAndDay</span><span class="o">(</span><span class="s">"USU"</span><span class="o">,</span> <span class="nc">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">());</span>
+
+  <span class="n">assertEquals</span><span class="o">(</span><span class="nc">DayStatus</span><span class="o">.</span><span class="na">MISSING_HOURS</span><span class="o">,</span> <span class="n">resultado</span><span class="o">.</span><span class="na">getStatusList</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">if_the_worklog_for_the_resquested_day_is_equal_to_8_hours_the_status_is_RIGHT_HOURS</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">Worklog</span> <span class="n">worklog</span> <span class="o">=</span> <span class="nc">Mockito</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="nc">Worklog</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="nc">Mockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">worklog</span><span class="o">.</span><span class="na">getDuration</span><span class="o">()).</span><span class="na">thenReturn</span><span class="o">(</span><span class="mi">8</span><span class="o">);</span>
+  <span class="nc">Mockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">worklogRepository</span><span class="o">.</span><span class="na">findByUsernameAndDate</span><span class="o">(</span><span class="nc">ArgumentMatchers</span><span class="o">.</span><span class="na">anyString</span><span class="o">(),</span> <span class="nc">ArgumentMatchers</span><span class="o">.</span><span class="na">any</span><span class="o">(</span><span class="nc">LocalDate</span><span class="o">.</span><span class="na">class</span><span class="o">))).</span><span class="na">thenReturn</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">worklog</span><span class="o">));</span>
+
+  <span class="nc">DayStatusSummary</span> <span class="n">resultado</span> <span class="o">=</span> <span class="n">reportsService</span><span class="o">.</span><span class="na">getDayStatusSummaryForWorkerAndDay</span><span class="o">(</span><span class="s">"USU"</span><span class="o">,</span> <span class="nc">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">());</span>
+
+  <span class="n">assertEquals</span><span class="o">(</span><span class="nc">DayStatus</span><span class="o">.</span><span class="na">RIGHT_HOURS</span><span class="o">,</span> <span class="n">resultado</span><span class="o">.</span><span class="na">getStatusList</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">if_the_worklog_for_the_resquested_day_is_more_than_8_hours_the_status_is_EXTRA_HOURS</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">Worklog</span> <span class="n">worklog</span> <span class="o">=</span> <span class="nc">Mockito</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="nc">Worklog</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="nc">Mockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">worklog</span><span class="o">.</span><span class="na">getDuration</span><span class="o">()).</span><span class="na">thenReturn</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+  <span class="nc">Mockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">worklogRepository</span><span class="o">.</span><span class="na">findByUsernameAndDate</span><span class="o">(</span><span class="nc">ArgumentMatchers</span><span class="o">.</span><span class="na">anyString</span><span class="o">(),</span> <span class="nc">ArgumentMatchers</span><span class="o">.</span><span class="na">any</span><span class="o">(</span><span class="nc">LocalDate</span><span class="o">.</span><span class="na">class</span><span class="o">))).</span><span class="na">thenReturn</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">worklog</span><span class="o">));</span>
+
+  <span class="nc">DayStatusSummary</span> <span class="n">resultado</span> <span class="o">=</span> <span class="n">reportsService</span><span class="o">.</span><span class="na">getDayStatusSummaryForWorkerAndDay</span><span class="o">(</span><span class="s">"USU"</span><span class="o">,</span> <span class="nc">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">());</span>
+
+  <span class="n">assertEquals</span><span class="o">(</span><span class="nc">DayStatus</span><span class="o">.</span><span class="na">EXTRA_HOURS</span><span class="o">,</span> <span class="n">resultado</span><span class="o">.</span><span class="na">getStatusList</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>In this case the coverage percentage is 100% of code lines and branches. And it also seems that the tests already make more sense. Now, yes, we would feel safe with them, right? Is that so, or is it just a perception?</p>
+
+<p>If someone modified part of the method, of course, before committing and pushing, it would pass the tests. If there were no tests in red, all clear: nothing has been “broken”.</p>
+
+<p>Can we be sure?</p>
+
+<p>Let’s suppose that what is modified in the example method is:</p>
+
+<h5 id="reportsserviceimpljava">ReportsServiceImpl.java</h5>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">for</span> <span class="o">(</span><span class="nc">Worklog</span> <span class="n">worklog</span> <span class="o">:</span> <span class="n">worklogsForDay</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">totalDuration</span> <span class="o">=</span> <span class="n">totalDuration</span> <span class="o">+</span> <span class="n">worklog</span><span class="o">.</span><span class="na">getDuration</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+<p>for</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">for</span> <span class="o">(</span><span class="nc">Worklog</span> <span class="n">worklog</span> <span class="o">:</span> <span class="n">worklogsForDay</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">totalDuration</span> <span class="o">=</span> <span class="n">worklog</span><span class="o">.</span><span class="na">getDuration</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Our tests will continue to pass<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote">2</a></sup>. We also continue with a high % coverage… Everything is perfect!</p>
+
+<blockquote>
+  <p>Test → <strong>feeling</strong> of security</p>
+</blockquote>
+
+<h2 id="mutation-testing-systems-securing-the-way">Mutation testing systems: securing the way</h2>
+
+<blockquote>
+  <p><strong>Because we can’t write perfect software, it follows that we can’t write perfect test software either. We need to test the tests.</strong></p>
+  <p align="right"><strong>The Pragmatic Programmer.</strong> Chapter 8: Pragmatic projects</p>
+</blockquote>
+
+<p>It seems that the tests we have created are not as good as we thought, they don’t have enough quality to ensure the quality (forgive the repetition) of our method. We have been offered a false sense of security.</p>
+
+<p>It’s clear that achieving a high % coverage isn’t easy and if writing tests is costly, writing good tests is even more so, and what we get is an unreal sense of security. Couldn’t we make this feeling closer to reality? Couldn’t we detect situations, like the one we’ve seen, automatically?</p>
+
+<p>Well, to deal with this type of situation, the so-called <em>Mutation Testing Systems</em> come up. The idea behind them is none other than the one we have put forward in the last example: to simulate changes in the source code being tested and verify that in reality, some tests are failed after a modification has been made.</p>
+
+<blockquote>
+  <p>Quality software → quality code → quality tests → mutation test % coverage</p>
+</blockquote>
+
+<p>The basic concepts are as follows:</p>
+
+<ul>
+  <li>Every change that is generated in the code is a <strong>mutant</strong>.</li>
+  <li>Each change (or mutation) that our tests are able to detect is called <strong>killing a mutant</strong> (killed mutant).</li>
+  <li>Any changes (or mutants) that our tests are not able to detect are <strong>living mutants</strong> (survived mutant).</li>
+  <li>Changes in the code are generated by <strong>mutant operators</strong> (mutators / mutation operators), which are grouped into different categories depending on the type of change they make in the code.</li>
+</ul>
+
+<p>Personally, I hadn’t heard  of this concept until relatively recently. However, the reality is that it has been with us for several years. There are alternatives for the different technological stacks, for example:</p>
+
+<ul>
+  <li><a href="https://stryker-mutator.io/" target="_blank">Stryker</a> for JavaScript, TypeScript, C# and Scala</li>
+  <li><a href="https://thesoftwaredesignlab.github.io/mutode/" target="_blank">Mutode</a> for JavaScript and Node.js</li>
+  <li><a href="https://cosmic-ray.readthedocs.io/en/latest/" target="_blank">Cosmic Ray</a> for Python</li>
+  <li><a href="https://pypi.org/project/mutmut/" target="_blank">mutmut</a> for Python</li>
+  <li><a href="https://github.com/mbj/mutant" target="_blank">Mutant</a> for Ruby</li>
+</ul>
+
+<p>Back to Java, some of the mutation systems are (or have been):</p>
+
+<ul>
+  <li><a href="https://pitest.org/" target="_blank">PIT</a></li>
+  <li><a href="http://jumble.sourceforge.net/index.html" target="_blank">Jumble</a></li>
+  <li><a href="http://jester.sourceforge.net/" target="_blank">Jester</a></li>
+  <li><a href="https://github.com/jeffoffutt/muJava" target="_blank">muJava</a></li>
+</ul>
+
+<p>We have used PIT because:</p>
+
+<ul>
+  <li>It is easy to use</li>
+  <li>It is easily integrated in the projects that we have used (through a maven plugin) as well as in the IDE (in our case Eclipse)</li>
+  <li>It supports different configurations (some to improve efficiency)</li>
+  <li>It is still active</li>
+  <li>It seems to be the most widely used solution today</li>
+</ul>
+
+<p>If we run the <em>pitest</em> report in our example, we will see this result.</p>
+
+<p><img src="/assets/images/2020-05-12-mutation-testing/PitTestCoverageReport01.png" alt="Informe _Pit test_ general" class="center" /></p>
+
+<p>Here we see general result: on one side is the coverage of code lines, and on the other side, the mutation coverage.</p>
+
+<p><img src="/assets/images/2020-05-12-mutation-testing/PitTestCoverageReportClass01.png" alt="Informe _Pit test_ clase" class="center" /></p>
+
+<p>The lines marked in green reflect code in which PIT has made changes and tests have been able to detect them. The lines marked in red reflect the lines of code in which our tests have failed to detect that there had been changes. If we look at line 27, it is the one that we had modified and it passed our tests. Now we have two options: go ahead, accepting that our code may have some fragility, or the most accurate (and logical), add/correct tests that ensure reliability when faced with detected changes.</p>
+
+<p>In the following <a href="https://github.com/wearearima/time-report-app/tree/feature/03_tests_improving_quality" target="_blank">link</a> the sample code which we have worked on is available, where we have improved the tests to achieve greater mutant coverage.</p>
+
+<p>The mutants that are applied are configurable, and the balance between the number/type of mutants configured and the execution time must be assessed. The greater the number of tests, the greater the number of lines of code and the greater the number of mutants, the more time Pit will need to generate the corresponding report. We could reach a point where it is so costly to do the report that we skip it, and then all the effort put into testing would be lost. In the examples, we have seen only unit tests, but the same applies to integration tests (many of them already costly in themselves).</p>
+
+<p>In our case, we usually configure the ones that come by default (DEFAULTS) and add those of the following group (NEW_DEFAULTS). In the sample code, others are configured, but <a href="https://pitest.org/quickstart/mutators/" target="_blank">here</a> the Pit mutators are shown, so try to change the configuration and see the different results.</p>
+
+<h2 id="conclusions">Conclusions</h2>
+
+<blockquote>
+  <p>Quality software → quality code → quality tests</p>
+</blockquote>
+
+<p>Quality software requires quality code, which in turn can be ensured thanks to quality tests.</p>
+
+<p>Generally, there is more code to test a method than to implement it, which obviously involves a lot of time: we will spend more time testing a method than implementing it. We need to ensure that this effort is not in vain.</p>
+
+<p><strong>Mutation testing</strong> is a tool that allows us to evaluate and improve the quality of our tests. The price to pay is the increase in time needed to do it. Taking into account that it is based on code mutations and that it applies not only to unit tests, but also to integration tests, as the code grows and the number of tests increases, it will take longer to execute them. Therefore, it is necessary to look for formulas that ensure that at some stage of our development, all tests are done: if we stop doing them because it is too costly, all the effort will have been for nothing.</p>
+
+<p>We have taken a firm step, but we are still on the path to quality: what can we do to find this balance? Can we organize the tests in some way to make things easier? Are there tools that allow us to develop/run tests more efficiently?</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>If you want to try all this then download the code from <a href="https://github.com/wearearima/time-report-app/tree/feature/01_tests_for_project_requirements" target="_blank">here</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>Try it for yourself, the code is available <a href="https://github.com/wearearima/time-report-app/tree/feature/02_tests_for_testing_purposes" target="_blank">here</a> <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+            </div>
+
+            
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer>
+    <div class="wrapper">
+        <div class="footer__container">
+            <div class="footer__sello">
+                <img src="/assets/images/arima_sello_white.png" alt="" />
+            </div>
+            <div class="footer__content">
+                <div class="footer__data">
+                    <dl>
+                        <dt>web</dt>
+                        <dd><a itemprop="sameAs" href="https://www.arima.eu/en/">arima.eu</a></dd>
+                    </dl>
+                    <dl>
+                        <dt>social</dt>
+                        <dd>
+                            <a itemprop="sameAs" href="https://github.com/wearearima" class="social"><span class="icon-github"></span></a>
+                            <a itemprop="sameAs" href="https://twitter.com/wearearima" class="social"><span class="icon-twitter"></span></a>
+                            <a itemprop="sameAs" href="https://www.linkedin.com/company/arima-software-design/" class="social"><span class="icon-linkedin"></span></a>
+                            <a itemprop="sameAs" href="/en/feed.xml" class="social"><span class="icon-feed"></span></a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>Privacy</dt>
+                        <dd class="politica-cookies">
+                            <a href="/en/cookies.html">Cookies Policy</a>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+    <div class="cookies-message" id="cookies-message">
+    <h4>This website uses cookies</h4>
+    <p>This website uses cookies to improve user experience. By continuing to browse this website, you agree to the use of cookies as stated in our Cookies Policy.</p>
+    <div class="buttons">
+        <a class="button" href="/en/cookies.html">Read Cookies Policy</a>
+        <button class="button" id="accept-cookies">Accept</button>
+    </div>
+</div>
+<script>
+    (function() {
+        if(localStorage) {
+            var cookiesAccepted = localStorage.getItem("cookies-accepted");
+            if(cookiesAccepted) {
+                hideCookiesMessage();
+                
+            } else {
+                document.getElementById('accept-cookies').addEventListener("click", function() {
+                    hideCookiesMessage();
+                    localStorage.setItem("cookies-accepted", true);
+                })
+            }
+        }
+        function hideCookiesMessage() {
+            document.getElementById('cookies-message').style.display = "none";
+        }
+    })();
+</script>
+
+  </body>
+
+</html>
