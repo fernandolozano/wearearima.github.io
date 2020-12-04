@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/Blog">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Squeezing the most out of your Data Lake (Part I, Hudi)</title>
+  <meta name="description" content="Since the first databases emerged in the 70s, a way to fully utilize this information has always been sought by trying to extract indicators that help in dec...">
+  
+  <meta name="keywords" content="bigdata,datalake,apachehudi,docker,datawarehouse,parquet,avro,orc,deltalake,iceberg">
+  
+
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@wearearima">
+  <meta name="twitter:creator" content="@juan">
+  <meta name="twitter:title"   content="Squeezing the most out of your Data Lake (Part I, Hudi)">
+
+  
+  <meta name="twitter:description" content="">
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://blog.arima.eu/assets/images/2020-10-20-exprimiendo-tu-data-lake-parte-I-hudi/post-header.jpg">
+  
+  <!-- end of Twitter cards -->
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://blog.arima.eu/en/2020/10/20/exprimiendo-tu-data-lake-parte-I-hudi.html">
+  <link rel="alternate" type="application/rss+xml" title="ARIMA" href="/en/feed.xml">
+
+  <!-- SEO Recipes (http://polyglot.untra.io/seo/) -->
+  <meta http-equiv="Content-Language" content="en">
+  <link rel="alternate"
+      hreflang="es"
+      href="https://blog.arima.eu/en/2020/10/20/exprimiendo-tu-data-lake-parte-I-hudi.html" />
+  
+  
+  <link rel="alternate"
+      hreflang="es"
+      href="https://blog.arima.eu/es/2020/10/20/exprimiendo-tu-data-lake-parte-I-hudi.html" />
+  
+  
+  <link rel="alternate"
+      hreflang="en"
+      href="https://blog.arima.eu/en/2020/10/20/exprimiendo-tu-data-lake-parte-I-hudi.html" />
+  
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120217722-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-120217722-1');
+</script>
+  
+</head>
+
+  <body>
+    <nav class="toolbar">
+    <div class="wrapper">    
+        <a href="/en/">
+            <div class="toolbar__logo">
+                <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" width="100%" height="100%" viewBox="0 0 33 6">
+    <path id="path24" d="m30.346988508615652,-0.000015174522529526127 l-0.6439224998849951,0 l-2.7763635316117727,6.135695064030662 l0.7050150612484405,0 l2.3859233880279893,-5.335002838884215 l2.3660424189063254,5.335002838884215 l0.739668694925785,0 L30.346988508615652,-0.000015174522529526127 zm-8.274141805179609,3.3681675186951847 l-2.2194202716340565,-3.324608867598761 l-0.6962481061149294,0 l0,6.092136412934239 l0.6700853029999622,0 l0,-4.926062349034439 l2.2194202716340565,3.2553706313868567 l0.034929758248478535,0 l2.2192131782057056,-3.2639304930920168 l0,4.934622210739599 l0.6873430886958508,0 l0,-6.092136412934239 l-0.6961100438293623,0 l-2.2192131782057056,3.324608867598761 zm-9.143036799396208,-1.5057072863948877 c0,-1.0964906719739773 -0.8613705996531913,-1.8189015812038738 -2.201748299081466,-1.8189015812038738 l-2.619662837493104,0 l0,6.092136412934239 l0.6876192132669849,0 l0,-5.456842805897188 l1.8799251114245357,0 c0.9833486289517317,0 1.5576187057681203,0.4525681720889824 1.5576187057681203,1.2097017461390067 c0,0.7919252700129356 -0.7831583148794242,1.2620273523689407 -1.6968545207625496,1.2620273523689407 l0,0.6178287279128115 l1.7665759749739396,2.3672849794764295 l0.8442508762428699,0 l-1.8711581562910244,-2.4891249464894027 c0.9571858258367647,-0.17416557324290774 1.6534339319516944,-0.7659695603263191 1.6534339319516944,-1.7841098852409623 m2.7743616284710493,4.273234831730365 l0.6872050264102838,0 l0,-6.0920673817914555 l-0.6872050264102838,0 l0,6.0920673817914555 zM2.7761571742923965,-0.000015174522529526127 l-2.7761564381834223,6.135695064030662 l0.7048769989628736,0 l2.386061450313556,-5.335002838884215 l2.3658353254779745,5.335002838884215 l0.739668694925785,0 l-2.7761564381834223,-6.135695064030662 l-0.6441295933133457,0 z" stroke-width="0"/>
+</svg>
+
+            </div>
+        </a>
+        <!-- Language selector -->
+        <div class="language-selector">
+            
+              
+                <a class="unselected" href="/es/2020/10/20/exprimiendo-tu-data-lake-parte-I-hudi.html">ES</a>
+              
+              
+                &nbsp;|&nbsp;
+              
+            
+              
+                <b class="selected">EN</b>
+              
+              
+            
+         </div>
+    </div>
+</nav>
+<div id="publisher_id" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Arima 100% Software Design" />
+    <meta itemprop="url" content="https://arima.eu" />
+    <div itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+        <meta itemprop="url" content="https://arima.eu/img/logo.png" />
+    </div>
+</div>
+    <main aria-label="Content">        
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting" itemref="publisher_id">
+          <link itemprop="mainEntityOfPage" href="/en/2020/10/20/exprimiendo-tu-data-lake-parte-I-hudi.html" />
+
+          <header class="post-header">
+            <div class="post-img" itemprop="image" itemscope itemtype="http://schema.org/ImageObject" style="background-image: url('https://blog.arima.eu/assets/images/2020-10-20-exprimiendo-tu-data-lake-parte-I-hudi/post-header.jpg');">
+              <meta itemprop="url" content="https://blog.arima.eu/assets/images/2020-10-20-exprimiendo-tu-data-lake-parte-I-hudi/post-header.jpg" />
+            </div>
+            <div class="wrapper">
+              <div class="post-info__container">
+                <div class="post-info">
+                  <h1 class="post-title" itemprop="name headline">Squeezing the most out of your Data Lake (Part I, Hudi)</h1>
+                    <div class="post-meta" itemscope itemtype="https://schema.org/Person" itemprop="author">
+                      
+                      <div class="author-photo">
+                        <img itemprop="image" src="/assets/images/authors/juan.png" alt="">
+                      </div>
+                      <div>
+                        <span class="post-author" itemprop="name">Juan Barberio</span>
+                      </div>
+                      <div>
+                        <span class="post-date">20 Oct 2020</span>
+                      </div>
+                    </div>
+                    <meta  itemprop="datePublished dateModified" content="20 Oct 2020" />
+                </div>
+              </div>
+            </div>
+          </header>
+          <div class="wrapper">
+            <div class="post-content" itemprop="articleBody">
+              <p>Since the first databases emerged in the 70s, a way to fully utilize this information has always been sought by trying to extract indicators that help in decision-making. This is how the tools known as Data Warehouse were born, which were aimed at storing and getting the most out of this information. Many of these tools are made up of <a href="https://en.wikipedia.org/wiki/Column-oriented_DBMS" target="_blank">columnar databases</a> that allow analytical queries to be made in a much more efficient way than the row-oriented databases commonly used in operational databases.</p>
+
+<p>Over time, the needs and volumes of information with which companies work have grown exponentially. In the last 15 years, we have seen companies such as Google, Microsoft, Amazon, Facebook, Uber, Netflix or Twitter handling huge volumes of data and traffic. Traditional Data Warehouses were not capable of handling these volumes in a reasonable period of time and in many cases they needed several days to be able to execute the queries.</p>
+
+<p>This situation forced these companies to lead a change by launching papers and new tools that would allow them to analyze vast amounts of information more efficiently. The starting gun was fired by Google publishing the papers <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/gfs-sosp2003.pdf" target="_blank">Google File System</a> (2003) and <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf" target="_blank">Map Reduce</a> (2004). A few years later (2006), Yahoo published the open source project Hadoop, which was based on the  previously mentioned Google papers. Hadoop changed the data analytics industry as we had known it until then and started the movement called “Big Data”.</p>
+
+<p>The Hadoop stack basically allowed us to store (<a href="https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html" target="_blank">HDFS</a>) and process (<a href="https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf" target="_blank">Map Reduce</a>) the information in a distributed way. This increased the processing capacity as it could be scaled horizontally by adding more machines to the system.</p>
+
+<p>Having a distributed file system like HDFS made it possible for many organizations to start storing data that they previously had to discard. This trend became even more prominent with the birth of products such as Amazon S3, which allowed the storage of any type of information cheaply in the cloud. This new reality led James Dixon (founder of Pentaho) to conceive the idea of Data Lake in 2010. Data Lakes were presented as data stores in which you could find raw information as it had been received and without any type of processing. In this way, you could start storing information with the expectation that one day it might be of use.</p>
+
+<p>This approach, which was attractive to many organizations, also involved an obvious danger. Storing the information without any criteria could cause our Data Lake to become a mess, where finding and organizing the information could be quite complicated and therefore, you would never get any benefit from it.</p>
+
+<p align="center">
+    <img src="/assets/images/2020-10-20-exprimiendo-tu-data-lake-parte-I-hudi/messy-room.png" />
+</p>
+
+<p>Another disadvantage of Hadoop is that it was necessary to have programming knowledge to be able to perform analytical operations on the data stored in the distributed file system. This made it impossible for some managers or analysts to carry out the tasks on their own without the help of a programmer. For this reason, a multitude of projects began to emerge, such as Apache Hive, which added SQL layers on top of this type of distributed file system. These SQL layers were accompanied by new storage formats that were more efficient and resembled those used in traditional databases since some were row oriented (Avro) and others column oriented (Parquet, ORC).</p>
+
+<p align="center">
+    <img src="/assets/images/2020-10-20-exprimiendo-tu-data-lake-parte-I-hudi/parquet-orc-avro.png" />
+</p>
+
+<p>Having Data Lakes capable of storing information in an efficient and accessible way through SQL, might lead us to think that these could completely replace the more traditional Data Warehouses. Although the line that separates them is getting thinner, there are certain characteristics that Data Lakes do not have and that over time have been seen to be necessary:</p>
+
+<ul>
+  <li>Being able to perform updates efficiently. Formats such as Parquet, by default, are not prepared to be updated and require manual processes which are lengthy and not very efficient.</li>
+  <li>ACID transactions with which to ensure the atomicity, consistency, isolation and durability of operations.</li>
+  <li><i>Lineage</i> or tracking, to know what modifications have been made to data over time.</li>
+  <li>Evolution of the scheme or structure.</li>
+</ul>
+
+<p>In recent years, some solutions have appeared that seek to meet these needs, such as:</p>
+
+<ul>
+  <li>Apache hudi</li>
+  <li>Delta Lake</li>
+  <li>Apache Iceberg</li>
+</ul>
+
+<p>In this article we are going to talk about Apache Hudi, but we will probably talk about Delta Lake and Iceberg in future posts.</p>
+
+<p align="center">
+    <img src="/assets/images/2020-10-20-exprimiendo-tu-data-lake-parte-I-hudi/apache-hudi.png" />
+</p>
+
+<p><i>Apache Hudi</i> is an open source project aimed at creating efficient data lakes and storing large data sets on HDFS file systems or cloud file systems such as S3. The very name of the project is a statement of intent for the features it provides: Hudi (<b>H</b>adoop <b>U</b>psert <b>D</b>elete and <b>I</b>ncremental).</p>
+
+<p><i>Hudi</i> therefore, allows you to apply updates efficiently on Parquet files stored in distributed file systems, taking care of aspects such as compaction and granting ACID capabilities. In addition, it allows you to make incremental queries so that you can obtain all the modifications that have been carried out from a given moment. This opens the door to being able to perform streaming analytics without having to introduce complex infrastructures such as those proposed in the <a href="http://lambda-architecture.net" target="_blank">lambda architecture</a>.</p>
+
+<p>Hudi has two operating modes, each of which is more suitable depending on the frequency with which data is read or written:</p>
+
+<ul>
+  <li>Copy on Write (CoW)</li>
+  <li>Merge on Read (MoR)</li>
+</ul>
+
+<p>The differences between these two modes can be found in the <a href="https://hudi.apache.org/docs/concepts.html#table-types--queries" target="_blank">official documentation</a>.</p>
+
+<p>In the <a href="https://github.com/wearearima/hudi-exercise" target="_blank">following</a> Github repository we have implemented an example in which you can see how Hudi is used, as well as some of its capabilities. In this example, Wikipedia entries are processed with Apache Spark, identifying those that correspond to celebrities. The result is stored in HDFS with Parquet format using the Hudi tool. Once this operation has been completed, new processes are carried out that trigger updates to the data. In these, we will see how HUDI automatically manages the creation and compaction of the new Parquet files, saving <i>commits</i> in each of the operations with which the <i>lineage</i> of the data can be checked .</p>
+
+<p>We will use the <code class="highlighter-rouge">hudi-spark</code> module that offers a <i>Datasource API</i> with which a Spark Dataframe can be written (and read) in a Hudi table, as follows:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="s">"hudi"</span><span class="p">)</span> \
+<span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="o">**</span><span class="n">hudi_options</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s">"overwrite"</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">basePath</span><span class="p">)</span>
+</code></pre></div></div>
+<p>However, it has another module called <i>DeltaStreamer</i> which you can use to work with streaming sources, such as Apache Kafka. More information <a href="https://hudi.apache.org/docs/writing_data.html" target="_blank">here</a>.</p>
+
+<h2 id="conclusions">Conclusions</h2>
+
+<p>In this article we have seen the motivation that led to the birth of the data stores known as Data Lake. We have also mentioned some of the shortcomings and drawbacks they have and how tools have appeared that seek to alleviate them. Does this mean that Data Lakes are going to evolve enough to become our only source of data? Perhaps it is too early to make such a statement, but what does seem certain is that we are in a time of change in the big data ecosystem and that the next few years will be exciting in this sector.</p>
+
+            </div>
+
+            
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer>
+    <div class="wrapper">
+        <div class="footer__container">
+            <div class="footer__sello">
+                <img src="/assets/images/arima_sello_white.png" alt="" />
+            </div>
+            <div class="footer__content">
+                <div class="footer__data">
+                    <dl>
+                        <dt>web</dt>
+                        <dd><a itemprop="sameAs" href="https://www.arima.eu/en/">arima.eu</a></dd>
+                    </dl>
+                    <dl>
+                        <dt>social</dt>
+                        <dd>
+                            <a itemprop="sameAs" href="https://github.com/wearearima" class="social"><span class="icon-github"></span></a>
+                            <a itemprop="sameAs" href="https://twitter.com/wearearima" class="social"><span class="icon-twitter"></span></a>
+                            <a itemprop="sameAs" href="https://www.linkedin.com/company/arima-software-design/" class="social"><span class="icon-linkedin"></span></a>
+                            <a itemprop="sameAs" href="/en/feed.xml" class="social"><span class="icon-feed"></span></a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>Privacy</dt>
+                        <dd class="politica-cookies">
+                            <a href="/en/cookies.html">Cookies Policy</a>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+    <div class="cookies-message" id="cookies-message">
+    <h4>This website uses cookies</h4>
+    <p>This website uses cookies to improve user experience. By continuing to browse this website, you agree to the use of cookies as stated in our Cookies Policy.</p>
+    <div class="buttons">
+        <a class="button" href="/en/cookies.html">Read Cookies Policy</a>
+        <button class="button" id="accept-cookies">Accept</button>
+    </div>
+</div>
+<script>
+    (function() {
+        if(localStorage) {
+            var cookiesAccepted = localStorage.getItem("cookies-accepted");
+            if(cookiesAccepted) {
+                hideCookiesMessage();
+                
+            } else {
+                document.getElementById('accept-cookies').addEventListener("click", function() {
+                    hideCookiesMessage();
+                    localStorage.setItem("cookies-accepted", true);
+                })
+            }
+        }
+        function hideCookiesMessage() {
+            document.getElementById('cookies-message').style.display = "none";
+        }
+    })();
+</script>
+
+  </body>
+
+</html>

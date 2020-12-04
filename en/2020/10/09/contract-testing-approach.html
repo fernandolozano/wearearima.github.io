@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/Blog">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Contract Testing strategy: Producer driven or Consumer driven</title>
+  <meta name="description" content="In a previous post we saw how new needs arise in the field of testing derived from the evolution of application architectures. We talked about how over the y...">
+  
+  <meta name="keywords" content="testing,calidad,softwarequality,QA,contracttesting,consumer-drivencontract,consumerdrivencontract,pact,springcloudcontract">
+  
+
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@wearearima">
+  <meta name="twitter:creator" content="@jessica">
+  <meta name="twitter:title"   content="Contract Testing strategy: Producer driven or Consumer driven">
+
+  
+  <meta name="twitter:description" content="">
+  
+
+  
+  <meta name="twitter:card"  content="summary_large_image">
+  <meta name="twitter:image" content="https://blog.arima.eu/assets/images/2020-10-09-contract-testing/header_recortado.jpg">
+  
+  <!-- end of Twitter cards -->
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://blog.arima.eu/en/2020/10/09/contract-testing-approach.html">
+  <link rel="alternate" type="application/rss+xml" title="ARIMA" href="/en/feed.xml">
+
+  <!-- SEO Recipes (http://polyglot.untra.io/seo/) -->
+  <meta http-equiv="Content-Language" content="en">
+  <link rel="alternate"
+      hreflang="es"
+      href="https://blog.arima.eu/en/2020/10/09/contract-testing-approach.html" />
+  
+  
+  <link rel="alternate"
+      hreflang="es"
+      href="https://blog.arima.eu/es/2020/10/09/contract-testing-approach.html" />
+  
+  
+  <link rel="alternate"
+      hreflang="en"
+      href="https://blog.arima.eu/en/2020/10/09/contract-testing-approach.html" />
+  
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120217722-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-120217722-1');
+</script>
+  
+</head>
+
+  <body>
+    <nav class="toolbar">
+    <div class="wrapper">    
+        <a href="/en/">
+            <div class="toolbar__logo">
+                <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" width="100%" height="100%" viewBox="0 0 33 6">
+    <path id="path24" d="m30.346988508615652,-0.000015174522529526127 l-0.6439224998849951,0 l-2.7763635316117727,6.135695064030662 l0.7050150612484405,0 l2.3859233880279893,-5.335002838884215 l2.3660424189063254,5.335002838884215 l0.739668694925785,0 L30.346988508615652,-0.000015174522529526127 zm-8.274141805179609,3.3681675186951847 l-2.2194202716340565,-3.324608867598761 l-0.6962481061149294,0 l0,6.092136412934239 l0.6700853029999622,0 l0,-4.926062349034439 l2.2194202716340565,3.2553706313868567 l0.034929758248478535,0 l2.2192131782057056,-3.2639304930920168 l0,4.934622210739599 l0.6873430886958508,0 l0,-6.092136412934239 l-0.6961100438293623,0 l-2.2192131782057056,3.324608867598761 zm-9.143036799396208,-1.5057072863948877 c0,-1.0964906719739773 -0.8613705996531913,-1.8189015812038738 -2.201748299081466,-1.8189015812038738 l-2.619662837493104,0 l0,6.092136412934239 l0.6876192132669849,0 l0,-5.456842805897188 l1.8799251114245357,0 c0.9833486289517317,0 1.5576187057681203,0.4525681720889824 1.5576187057681203,1.2097017461390067 c0,0.7919252700129356 -0.7831583148794242,1.2620273523689407 -1.6968545207625496,1.2620273523689407 l0,0.6178287279128115 l1.7665759749739396,2.3672849794764295 l0.8442508762428699,0 l-1.8711581562910244,-2.4891249464894027 c0.9571858258367647,-0.17416557324290774 1.6534339319516944,-0.7659695603263191 1.6534339319516944,-1.7841098852409623 m2.7743616284710493,4.273234831730365 l0.6872050264102838,0 l0,-6.0920673817914555 l-0.6872050264102838,0 l0,6.0920673817914555 zM2.7761571742923965,-0.000015174522529526127 l-2.7761564381834223,6.135695064030662 l0.7048769989628736,0 l2.386061450313556,-5.335002838884215 l2.3658353254779745,5.335002838884215 l0.739668694925785,0 l-2.7761564381834223,-6.135695064030662 l-0.6441295933133457,0 z" stroke-width="0"/>
+</svg>
+
+            </div>
+        </a>
+        <!-- Language selector -->
+        <div class="language-selector">
+            
+              
+                <a class="unselected" href="/es/2020/10/09/contract-testing-approach.html">ES</a>
+              
+              
+                &nbsp;|&nbsp;
+              
+            
+              
+                <b class="selected">EN</b>
+              
+              
+            
+         </div>
+    </div>
+</nav>
+<div id="publisher_id" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Arima 100% Software Design" />
+    <meta itemprop="url" content="https://arima.eu" />
+    <div itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+        <meta itemprop="url" content="https://arima.eu/img/logo.png" />
+    </div>
+</div>
+    <main aria-label="Content">        
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting" itemref="publisher_id">
+          <link itemprop="mainEntityOfPage" href="/en/2020/10/09/contract-testing-approach.html" />
+
+          <header class="post-header">
+            <div class="post-img" itemprop="image" itemscope itemtype="http://schema.org/ImageObject" style="background-image: url('https://blog.arima.eu/assets/images/2020-10-09-contract-testing/header_recortado.jpg');">
+              <meta itemprop="url" content="https://blog.arima.eu/assets/images/2020-10-09-contract-testing/header_recortado.jpg" />
+            </div>
+            <div class="wrapper">
+              <div class="post-info__container">
+                <div class="post-info">
+                  <h1 class="post-title" itemprop="name headline">Contract Testing strategy: Producer driven or Consumer driven</h1>
+                    <div class="post-meta" itemscope itemtype="https://schema.org/Person" itemprop="author">
+                      
+                      <div class="author-photo">
+                        <img itemprop="image" src="/assets/images/authors/jessica.png" alt="">
+                      </div>
+                      <div>
+                        <span class="post-author" itemprop="name">Jessica Aguado</span>
+                      </div>
+                      <div>
+                        <span class="post-date">09 Oct 2020</span>
+                      </div>
+                    </div>
+                    <meta  itemprop="datePublished dateModified" content="09 Oct 2020" />
+                </div>
+              </div>
+            </div>
+          </header>
+          <div class="wrapper">
+            <div class="post-content" itemprop="articleBody">
+              <p>In a <a href="https://blog.arima.eu/en/2020/09/03/contract-testing.html" target="_blank">previous post</a> we saw how new needs arise in the field of testing derived from the evolution of application architectures. We talked about how over the years we have gone from developing applications based on a monolithic architecture to applications based on (micro) services. Where before we had centralized tests in a single application, we now have them divided between several, so we have to ensure that each of them is tested independently and securely.</p>
+
+<p>We presented a simple example of an application, which helped us to establish some concepts (such as <em>consumer</em>, <em>producer</em>, <em>service</em>) and which allowed us to highlight a new need: as important as testing the functionalities in <em>consumer</em> and <em>producer</em> independently is, so it is to ensure that the interaction between the two is right. We can address this need by means of <em>end-to-end</em> tests, but while these tests are already complex to implement/execute in monolithic applications, they are even more so in other types of applications.</p>
+
+<p>At this point an idea comes up: it could be enough to verify between <em>consumer</em> and <em>producer</em>  that there is an agreement they both keep to. This is where we discover a new concept: <strong>Contract Testing</strong>.</p>
+
+<p>And what is <strong>Contract Testing</strong>? In the Pact documentation we find the following <a href="https://docs.pact.io/#what-is-contract-testing" target="_blank">definition</a></p>
+<blockquote>
+  <p>It is a technique that allows us to test the integration of several applications, verifying in each one of them that the messages sent or received (depending on their role <em>consumer/producer</em>) conform to an agreement that is documented in a contract.</p>
+</blockquote>
+
+<p>We could explain this concept and translate it (at a practical level) through the following points:</p>
+<ul>
+  <li>There will be a specific agreement defined to which both <em>consumer</em> and <em>producer</em> will have access.</li>
+  <li>In the <em>consumer</em>, we will have tests where the requests will be made to a “stub” of the <em>producer</em> which will comply with the defined agreement.</li>
+  <li>In the <em>producer</em>, we will have tests where requests based on the defined agreement will be made.</li>
+</ul>
+
+<p>Depending on the tool/framework that we take as a reference, the concept of “agreement between <em>consumer</em> and <em>producer</em>” is called <strong>pact</strong> or <strong>contract</strong>, but they are just different names for the same concept: a specification of what the requests and responses should be like to consume the services offered by the <em>producer</em>.</p>
+
+<p>Going back to the same example we used in the previous post, this idea could be represented as follows:</p>
+
+<p><img src="/assets/images/2020-10-09-contract-testing/01_schema_app_simplificado_agreement.jpg" alt="Example of the scheme of an application with consumer-producer where the part in which the Contract Testing is focused is highlighted" class="center" /></p>
+
+<p>Having presented the concept behind <em>Contract Testing</em> in general terms, let’s dig a little deeper by looking at the existing approaches and tools.</p>
+
+<h1 id="approaches">Approaches</h1>
+<p>In the literature we mainly find the connection <strong><em>Contract Testing</em></strong> → <strong><em>Consumer Driven Contract Testing</em></strong>. This at first made it more difficult for me to understand the underlying concept. After reading several posts, documentation…. I came to the conclusion that the reason for this association starts from the idea that a <em>service</em> from a <em>producer</em> is meaningless if there is no application using it (<em>consumer</em>). Therefore, it seems logical that it is the <em>consumer</em> who establishes which agreement must be complied with, while the <em>producer</em> should be responsible for satisfying the requirements set by the <em>consumer</em> (hence the tagline “Consumer Driven”).</p>
+
+<p>Okay, fine, but in the projects that I have been closely involved with, this has not exactly been the case. The scenario has been that of a <em>producer</em> across several applications, unaware of its <em>consumers</em> and to whom it offers certain services.</p>
+
+<p>So, I couldn’t quite make it fit together. I had to take a step back and see it in perspective to understand that, in reality, we could encounter two different situations, according to the project that we had in hand (different in form but the same in concept) and depending on who it is that defines the agreement, there might be two approaches:</p>
+
+<ul>
+  <li><strong><em>Consumer Driven</em> Contract Testing</strong></li>
+  <li><strong><em>Producer Driven</em> Contract Testing</strong></li>
+</ul>
+
+<p>And why not? The name leaves no room for doubt: in one case the definition of the contract comes from the <em>consumer</em> and in the other from the <em>producer</em>. The truth is that there was a moment when <em>Producer Driven Contract Testing</em> seemed like it was my own invention (just look at the Google search for this term or provider-driven…), but I found a reference to the term (as we’ll see a little later) which gave me the base to continue with my mental schema.</p>
+
+<p>The basic concept, in both cases, is still the same. However, depending on the approach that best fits our project, we can choose one or the other. The same applies when choosing the tools: depending on our needs, we can choose between the various existing ones.</p>
+
+<h1 id="tools">Tools</h1>
+
+<p>Based on the example presented at the beginning (and knowing that it is a Spring Boot project managed with Maven), the most popular tools we have come across that we could use are:</p>
+
+<ul>
+  <li>
+    <p><strong>Pact</strong></p>
+
+    <p>This tool is strongly connected to <em>Consumer Driven Contract Testing</em>, basically because the pacts will always be in the <em>consumer</em> part. In the <a href="https://docs.pact.io/#consumer-driven-contracts" target="_blank">documentation</a> we can read:</p>
+
+    <blockquote>
+      <p>Pact is a code-first consumer-driven contract testing tool, ….
+ The contract is generated during the execution of the automated consumer tests</p>
+    </blockquote>
+  </li>
+  <li>
+    <p><strong>Spring Cloud Contract</strong></p>
+
+    <p>Although in its <a href="https://spring.io/projects/spring-cloud-contract" target="_blank">description</a> it says…</p>
+    <blockquote>
+      <p>Spring Cloud Contract is an umbrella project holding solutions that help users in successfully implementing the Consumer Driven Contracts approach. Currently Spring Cloud Contract consists of the Spring Cloud Contract Verifier project.</p>
+    </blockquote>
+
+    <p>…it can be used in both ways. In fact, in the documentation <a href="https://docs.pact.io/getting_started/comparisons/#how-does-pact-differ-from-spring-cloud-contract" target="_blank">Pact</a> it indicates that Spring Cloud Contract originated from the provider-driven approach.</p>
+    <blockquote>
+      <p>Pact has always been a consumer-driven contract testing framework whereas Spring Cloud Contract started as provider-driven.</p>
+    </blockquote>
+
+    <p>So it seems that I didn’t invent the term after all!</p>
+  </li>
+</ul>
+
+<p>So far, this is the process I followed until I understood that behind <strong>Contract Testing</strong> there is not only one approach, there are also multiple tools. As always, choosing what suits us best will depend on the project we have in hand.
+But this is all just a load of talk, right? And if, like me, to really learn/understand something, you need to put it into practice, don’t worry, as we’re not finished here: shortly I’m going to publish a brief example using <strong>Spring Cloud Contract</strong>.</p>
+
+            </div>
+
+            
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer>
+    <div class="wrapper">
+        <div class="footer__container">
+            <div class="footer__sello">
+                <img src="/assets/images/arima_sello_white.png" alt="" />
+            </div>
+            <div class="footer__content">
+                <div class="footer__data">
+                    <dl>
+                        <dt>web</dt>
+                        <dd><a itemprop="sameAs" href="https://www.arima.eu/en/">arima.eu</a></dd>
+                    </dl>
+                    <dl>
+                        <dt>social</dt>
+                        <dd>
+                            <a itemprop="sameAs" href="https://github.com/wearearima" class="social"><span class="icon-github"></span></a>
+                            <a itemprop="sameAs" href="https://twitter.com/wearearima" class="social"><span class="icon-twitter"></span></a>
+                            <a itemprop="sameAs" href="https://www.linkedin.com/company/arima-software-design/" class="social"><span class="icon-linkedin"></span></a>
+                            <a itemprop="sameAs" href="/en/feed.xml" class="social"><span class="icon-feed"></span></a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>Privacy</dt>
+                        <dd class="politica-cookies">
+                            <a href="/en/cookies.html">Cookies Policy</a>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+    <div class="cookies-message" id="cookies-message">
+    <h4>This website uses cookies</h4>
+    <p>This website uses cookies to improve user experience. By continuing to browse this website, you agree to the use of cookies as stated in our Cookies Policy.</p>
+    <div class="buttons">
+        <a class="button" href="/en/cookies.html">Read Cookies Policy</a>
+        <button class="button" id="accept-cookies">Accept</button>
+    </div>
+</div>
+<script>
+    (function() {
+        if(localStorage) {
+            var cookiesAccepted = localStorage.getItem("cookies-accepted");
+            if(cookiesAccepted) {
+                hideCookiesMessage();
+                
+            } else {
+                document.getElementById('accept-cookies').addEventListener("click", function() {
+                    hideCookiesMessage();
+                    localStorage.setItem("cookies-accepted", true);
+                })
+            }
+        }
+        function hideCookiesMessage() {
+            document.getElementById('cookies-message').style.display = "none";
+        }
+    })();
+</script>
+
+  </body>
+
+</html>
